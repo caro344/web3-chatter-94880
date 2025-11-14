@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Web3 Dark Theme - Cosmic Space Aesthetic */
+    --background: 250 40% 6%;
+    --foreground: 180 100% 95%;
+
+    --card: 250 35% 10%;
+    --card-foreground: 180 100% 95%;
+
+    --popover: 250 40% 8%;
+    --popover-foreground: 180 100% 95%;
+
+    /* Cyan-Purple gradient primary */
+    --primary: 280 90% 65%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 190 95% 60%;
+
+    /* Glassmorphic secondary */
+    --secondary: 250 30% 18%;
+    --secondary-foreground: 180 100% 95%;
+
+    --muted: 250 25% 15%;
+    --muted-foreground: 240 10% 60%;
+
+    /* Neon accent */
+    --accent: 320 90% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 250 30% 20%;
+    --input: 250 30% 18%;
+    --ring: 280 90% 65%;
+
+    --radius: 0.75rem;
+
+    /* Web3 Gradients */
+    --gradient-cosmic: linear-gradient(135deg, hsl(190 95% 60%), hsl(280 90% 65%), hsl(320 90% 65%));
+    --gradient-glow: linear-gradient(180deg, hsl(250 40% 8%), hsl(250 35% 10%));
+    --gradient-card: linear-gradient(135deg, hsl(250 35% 12% / 0.8), hsl(250 30% 15% / 0.6));
+    
+    /* Shadows & Effects */
+    --shadow-neon: 0 0 30px hsl(280 90% 65% / 0.3), 0 0 60px hsl(190 95% 60% / 0.2);
+    --shadow-glow: 0 8px 32px hsl(280 90% 65% / 0.15);
+    --backdrop-blur: blur(12px);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-image: radial-gradient(circle at 20% 50%, hsl(280 90% 20% / 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, hsl(190 95% 30% / 0.15) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  /* Glassmorphic effect utility */
+  .glass {
+    background: hsl(var(--card) / 0.5);
+    backdrop-filter: var(--backdrop-blur);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  /* Neon glow utility */
+  .neon-glow {
+    box-shadow: var(--shadow-neon);
+  }
+
+  /* Gradient text utility */
+  .gradient-text {
+    background: var(--gradient-cosmic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--accent)));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, hsl(var(--primary-glow)), hsl(var(--primary)));
+}

@@ -4,6 +4,7 @@ import { config } from '@/lib/web3';
 import WalletConnect from '@/components/WalletConnect';
 import ChatInterface from '@/components/ChatInterface';
 import UserList from '@/components/UserList';
+import QuickGuide from '@/components/QuickGuide';
 import { Layers } from 'lucide-react';
 import { useMemo } from 'react';
 
@@ -37,6 +38,11 @@ const IndexContent = () => {
           <WalletConnect />
         </div>
       </header>
+
+      {/* Quick Guide */}
+      {!isConnected && (
+        <QuickGuide />
+      )}
 
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">

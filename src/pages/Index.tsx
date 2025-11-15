@@ -22,42 +22,56 @@ const IndexContent = () => {
   }, [address, isConnected]);
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      {/* Header */}
-      <header className="glass rounded-2xl p-6 mb-8 border border-border/50 shadow-glow">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary via-accent to-primary-glow flex items-center justify-center neon-glow">
-              <Layers className="w-6 h-6 text-white" />
+    <div className="min-h-screen">
+      {/* Hero Header */}
+      <header className="sticky top-0 z-50 glass border-b border-border/50 backdrop-blur-xl">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-primary via-accent to-primary-glow flex items-center justify-center neon-glow">
+                <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold gradient-text">Web3 Support</h1>
+                <p className="hidden sm:block text-xs md:text-sm text-muted-foreground">Real-time decentralized chat</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold gradient-text">Web3 Chat DApp</h1>
-              <p className="text-sm text-muted-foreground">Decentralized messaging on the blockchain</p>
-            </div>
+            <WalletConnect />
           </div>
-          <WalletConnect />
         </div>
       </header>
 
-      {/* Quick Guide */}
-      {!isConnected && (
-        <QuickGuide />
-      )}
+      {/* Main Container */}
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        {/* Quick Guide for new users */}
+        {!isConnected && (
+          <div className="mb-6 md:mb-8">
+            <QuickGuide />
+          </div>
+        )}
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
-        <div className="lg:col-span-2">
-          <ChatInterface />
-        </div>
-        <div className="hidden lg:block">
-          <UserList users={connectedUsers} />
-        </div>
-      </div>
+        {/* Chat & User Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
+          {/* Chat Area - Takes more space on desktop */}
+          <div className="lg:col-span-3 order-1">
+            <ChatInterface />
+          </div>
 
-      {/* Mobile User List */}
-      <div className="lg:hidden mt-6">
-        <UserList users={connectedUsers} />
-      </div>
+          {/* User List - Sidebar on desktop, below chat on mobile */}
+          <div className="order-2 lg:order-2">
+            <UserList users={connectedUsers} />
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-8">
+        <div className="glass rounded-2xl p-4 md:p-6 border border-border/50 text-center">
+          <p className="text-sm text-muted-foreground">
+            Powered by Web3 • Secure • Decentralized
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };

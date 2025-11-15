@@ -7,6 +7,8 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log('Webhook called - method:', req.method);
+  
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -28,9 +30,13 @@ serve(async (req) => {
       
       // If this is a reply to a previous message, extract wallet from it
       if (telegramMessage.reply_to_message?.text) {
-        const match = telegramMessage.reply_to_message.text.match(/Wallet: (0x[a-fA-F0-9]{40})/);
+        // Match wallet address with or without backticks (Telegram code formatting)
+        const match = telegramMessage.reply_to_message.text.match(/Wallet: `?(0x[a-fA-F0-9]{40})`?/);
         if (match) {
           walletAddress = match[1];
+          console.log('Extracted wallet address:', walletAddress);
+        } else {
+          console.log('Could not extract wallet from reply:', telegramMessage.reply_to_message.text);
         }
       }
 

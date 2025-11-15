@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.send-to-telegram]
 verify_jwt = true
+
+[functions.setup-telegram-webhook]
+verify_jwt = false

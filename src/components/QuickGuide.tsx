@@ -1,67 +1,60 @@
-import { Card } from '@/components/ui/card';
-import { AlertCircle, CheckCircle2, MessageSquare, Send } from 'lucide-react';
+import { Wallet, MessageCircle, Zap } from 'lucide-react';
+import { Card } from './ui/card';
 
 const QuickGuide = () => {
+  const steps = [
+    {
+      icon: Wallet,
+      title: 'Connect Wallet',
+      description: 'Click the connect button to link your Web3 wallet',
+    },
+    {
+      icon: MessageCircle,
+      title: 'Start Chatting',
+      description: 'Send messages and get instant support responses',
+    },
+    {
+      icon: Zap,
+      title: 'Real-time Updates',
+      description: 'Receive live notifications when support responds',
+    },
+  ];
+
   return (
-    <Card className="glass border border-border/50 p-6 mb-6">
-      <div className="flex items-center gap-2 mb-4">
-        <AlertCircle className="w-5 h-5 text-primary" />
-        <h3 className="font-semibold text-lg">How It Works</h3>
-      </div>
-      
-      <div className="space-y-4">
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-            <span className="text-sm font-bold text-primary">1</span>
-          </div>
-          <div>
-            <h4 className="font-medium mb-1 flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-green-500" />
-              Connect Your Wallet
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              Click "Connect Wallet" to authenticate with MetaMask or WalletConnect
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-            <span className="text-sm font-bold text-primary">2</span>
-          </div>
-          <div>
-            <h4 className="font-medium mb-1 flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-primary" />
-              Send a Message
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              Type your question or issue in the chat box
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-            <span className="text-sm font-bold text-primary">3</span>
-          </div>
-          <div>
-            <h4 className="font-medium mb-1 flex items-center gap-2">
-              <Send className="w-4 h-4 text-accent" />
-              Get Real-Time Support
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              Your message is forwarded to our Telegram. Replies appear here instantly!
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-4 p-3 rounded-lg bg-accent/10 border border-accent/20">
-        <p className="text-xs text-muted-foreground">
-          💡 <strong>Pro Tip:</strong> All your messages are saved. You can reconnect anytime to continue your conversation!
+    <div className="glass rounded-2xl p-4 md:p-8 border border-border/50 shadow-glow">
+      <div className="text-center mb-6 md:mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold gradient-text mb-2 md:mb-3">
+          Get Started in 3 Simple Steps
+        </h2>
+        <p className="text-sm md:text-base text-muted-foreground">
+          Connect your wallet and start chatting with our support team
         </p>
       </div>
-    </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          return (
+            <Card
+              key={index}
+              className="glass p-4 md:p-6 border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-glow"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-3 md:mb-4">
+                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
+                </div>
+                <h3 className="text-base md:text-lg font-semibold mb-2 text-foreground">
+                  {step.title}
+                </h3>
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 

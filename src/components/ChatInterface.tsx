@@ -146,13 +146,7 @@ const ChatInterface = () => {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!address || !sessionId) {
-      toast.error('Please connect your wallet first');
-      return;
-    }
-
-    if (!newMessage.trim()) return;
+    if (!address || !newMessage.trim() || !sessionId) return;
 
     setIsLoading(true);
 
@@ -168,13 +162,13 @@ const ChatInterface = () => {
         });
 
       if (insertError) {
-        console.error('Error saving message:', insertError);
+        console.error('Error inserting message:', insertError);
         toast.error('Failed to send message');
         return;
       }
 
-      // Send to Telegram
-      const { error: telegramError } = await supabase.functions.invoke('send-to-telegram', {
+      // Send to support backend
+      const { error: supportError } = await supabase.functions.invoke('send-to-telegram', {
         body: {
           walletAddress: address,
           message: newMessage.trim(),
@@ -182,9 +176,9 @@ const ChatInterface = () => {
         },
       });
 
-      if (telegramError) {
-        console.error('Error sending to Telegram:', telegramError);
-        toast.warning('Message saved but failed to notify support');
+      if (supportError) {
+        console.error('Error notifying support:', supportError);
+        toast.warning('Message saved but support notification failed');
       } else {
         toast.success('Message sent to support!');
         setSupportTyping(true);
@@ -202,73 +196,92 @@ const ChatInterface = () => {
   };
 
   return (
-    <div className="glass rounded-2xl p-6 h-full flex flex-col">
-      <div className="flex items-center gap-2 mb-6 pb-4 border-b border-border/50">
-        <MessageSquare className="w-5 h-5 text-primary" />
-        <h2 className="text-lg font-bold gradient-text">Web3 Support Chat</h2>
-        {address && (
-          <span className="ml-auto text-xs text-muted-foreground px-3 py-1 rounded-full bg-primary/10">
-            Connected
-          </span>
-        )}
-      </div>
-
-      <div className="flex-1 overflow-y-auto mb-6 pr-2 space-y-2">
-        {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center py-12">
-            <MessageSquare className="w-16 h-16 text-muted-foreground/50 mb-4" />
-            <h3 className="text-lg font-semibold text-muted-foreground mb-2">
-              {address ? 'Start a conversation' : 'Connect your wallet'}
-            </h3>
-            <p className="text-sm text-muted-foreground/70 max-w-md">
-              {address 
-                ? 'Send a message to get help from our support team. Replies will appear here instantly!'
-                : 'Connect your Web3 wallet to start chatting with support'}
+    <div className="flex flex-col h-full">
+      {/* Chat Header */}
+      <div className="glass rounded-t-2xl p-4 md:p-6 border border-border/50 border-b-0 shadow-glow">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-accent to-primary flex items-center justify-center">
+            <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-white" />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-lg md:text-xl font-bold text-foreground">Live Support Chat</h2>
+            <p className="text-xs md:text-sm text-muted-foreground">
+              {address ? 'Connected and ready to chat' : 'Connect your wallet to start'}
             </p>
           </div>
-        ) : (
-          <>
-            {messages.map((msg) => (
-              <MessageBubble
-                key={msg.id}
-                address={msg.wallet_address}
-                message={msg.message_text}
-                timestamp={new Date(msg.created_at)}
-                isOwn={msg.sender_type === 'user'}
-                isSupport={msg.sender_type === 'support'}
-              />
-            ))}
-            {supportTyping && (
-              <div className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground">
-                <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
-                  <span className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '300ms' }} />
-                </div>
-                Support is typing...
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </>
-        )}
+        </div>
       </div>
 
-      <form onSubmit={handleSendMessage} className="flex gap-3">
-        <Input
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder={address ? "Type your message..." : "Connect wallet to chat"}
-          disabled={!address || isLoading}
-          className="glass border-border/50 focus:border-primary transition-all duration-300"
-        />
-        <Button
-          type="submit"
-          disabled={!address || !newMessage.trim() || isLoading}
-          className="bg-gradient-to-r from-primary to-accent hover:shadow-glow transition-all duration-300"
-        >
-          <Send className="w-4 h-4" />
-        </Button>
-      </form>
+      {/* Messages Container */}
+      <div className="flex-1 glass rounded-b-2xl border border-border/50 border-t-0 overflow-hidden flex flex-col">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
+          {messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full py-8 md:py-12">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-4">
+                <MessageSquare className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+              </div>
+              <p className="text-base md:text-lg font-medium text-muted-foreground text-center px-4">
+                {address ? 'Start a conversation' : 'Connect your wallet to begin chatting'}
+              </p>
+              {address && (
+                <p className="text-xs md:text-sm text-muted-foreground/70 mt-2 text-center px-4">
+                  Your messages will receive real-time support responses
+                </p>
+              )}
+            </div>
+          ) : (
+            <>
+              {messages.map((msg) => (
+                <MessageBubble
+                  key={msg.id}
+                  address={msg.wallet_address}
+                  message={msg.message_text}
+                  timestamp={new Date(msg.created_at)}
+                  isOwn={msg.wallet_address === address}
+                  isSupport={msg.sender_type === 'support'}
+                />
+              ))}
+              
+              {/* Support Typing Indicator */}
+              {supportTyping && (
+                <div className="flex items-center gap-2 px-4 py-3 text-sm text-muted-foreground animate-in fade-in duration-300">
+                  <div className="flex gap-1">
+                    <span className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                  <span>Support is responding...</span>
+                </div>
+              )}
+              
+              <div ref={messagesEndRef} />
+            </>
+          )}
+        </div>
+
+        {/* Input Area */}
+        {address && (
+          <div className="border-t border-border/50 p-3 md:p-4 bg-card/50">
+            <form onSubmit={handleSendMessage} className="flex gap-2 md:gap-3">
+              <Input
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Type your message..."
+                disabled={isLoading}
+                className="flex-1 glass border-border/50 focus:border-primary transition-colors text-sm md:text-base"
+              />
+              <Button
+                type="submit"
+                disabled={!newMessage.trim() || isLoading}
+                className="bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity px-4 md:px-6 h-10 md:h-11"
+              >
+                <Send className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="ml-2 hidden sm:inline">Send</span>
+              </Button>
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

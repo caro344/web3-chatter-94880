@@ -6,12 +6,17 @@ import ChatInterface from '@/components/ChatInterface';
 import UserList from '@/components/UserList';
 import QuickGuide from '@/components/QuickGuide';
 import { Layers } from 'lucide-react';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 
 const queryClient = new QueryClient();
 
 const IndexContent = () => {
   const { address, isConnected } = useAccount();
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Only show the connected user in the user list
   const connectedUsers = useMemo(() => {

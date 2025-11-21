@@ -40,11 +40,12 @@ const WalletConnect = () => {
       <Button
         onClick={handleDisconnect}
         variant="outline"
-        className="glass border-primary/50 hover:border-primary hover:bg-primary/10 transition-all duration-300"
+        size="sm"
+        className="glass border-primary/50 hover:border-primary hover:bg-primary/10 transition-all duration-300 text-xs sm:text-sm px-2 sm:px-4"
       >
-        <Wallet className="w-4 h-4 mr-2" />
-        {truncateAddress(address)}
-        <LogOut className="w-4 h-4 ml-2" />
+        <Wallet className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
+        <span className="hidden sm:inline">{truncateAddress(address)}</span>
+        <LogOut className="w-3 h-3 sm:w-4 sm:h-4 sm:ml-2" />
       </Button>
     );
   }
@@ -52,10 +53,12 @@ const WalletConnect = () => {
   return (
     <Button
       onClick={handleConnect}
-      className="bg-gradient-to-r from-primary via-accent to-primary-glow bg-[length:200%_100%] animate-gradient text-white font-semibold hover:shadow-neon transition-all duration-300"
+      size="sm"
+      className="bg-gradient-to-r from-primary via-accent to-primary-glow bg-[length:200%_100%] animate-gradient text-white font-semibold hover:shadow-neon transition-all duration-300 text-xs sm:text-sm px-2 sm:px-4"
     >
-      <Wallet className="w-4 h-4 mr-2" />
-      Connect Wallet
+      <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+      <span className="hidden xs:inline sm:inline">Connect</span>
+      <span className="hidden sm:inline">&nbsp;Wallet</span>
     </Button>
   );
 };

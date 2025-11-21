@@ -8,49 +8,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Web3 Dark Theme - Cosmic Space Aesthetic */
-    --background: 250 40% 6%;
-    --foreground: 180 100% 95%;
+    /* Black & White Modern Theme */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 250 35% 10%;
-    --card-foreground: 180 100% 95%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 250 40% 8%;
-    --popover-foreground: 180 100% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 100%;
 
-    /* Cyan-Purple gradient primary */
-    --primary: 280 90% 65%;
+    /* Black primary */
+    --primary: 0 0% 10%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 190 95% 60%;
+    --primary-glow: 0 0% 20%;
 
-    /* Glassmorphic secondary */
-    --secondary: 250 30% 18%;
-    --secondary-foreground: 180 100% 95%;
+    /* Grey secondary */
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 250 25% 15%;
-    --muted-foreground: 240 10% 60%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
 
-    /* Neon accent */
-    --accent: 320 90% 65%;
-    --accent-foreground: 0 0% 100%;
+    /* White accent */
+    --accent: 0 0% 100%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 85% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 250 30% 20%;
-    --input: 250 30% 18%;
-    --ring: 280 90% 65%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 100%;
 
     --radius: 0.75rem;
 
-    /* Web3 Gradients */
-    --gradient-cosmic: linear-gradient(135deg, hsl(190 95% 60%), hsl(280 90% 65%), hsl(320 90% 65%));
-    --gradient-glow: linear-gradient(180deg, hsl(250 40% 8%), hsl(250 35% 10%));
-    --gradient-card: linear-gradient(135deg, hsl(250 35% 12% / 0.8), hsl(250 30% 15% / 0.6));
+    /* Black & White Gradients */
+    --gradient-cosmic: linear-gradient(135deg, hsl(0 0% 15%), hsl(0 0% 30%), hsl(0 0% 50%));
+    --gradient-glow: linear-gradient(180deg, hsl(0 0% 5%), hsl(0 0% 10%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 8% / 0.8), hsl(0 0% 12% / 0.6));
     
     /* Shadows & Effects */
-    --shadow-neon: 0 0 30px hsl(280 90% 65% / 0.3), 0 0 60px hsl(190 95% 60% / 0.2);
-    --shadow-glow: 0 8px 32px hsl(280 90% 65% / 0.15);
+    --shadow-neon: 0 0 30px hsl(0 0% 100% / 0.2), 0 0 60px hsl(0 0% 100% / 0.1);
+    --shadow-glow: 0 8px 32px hsl(0 0% 100% / 0.1);
     --backdrop-blur: blur(12px);
 
     /* Animations */
@@ -66,8 +66,8 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(circle at 20% 50%, hsl(280 90% 20% / 0.15) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 80%, hsl(190 95% 30% / 0.15) 0%, transparent 50%);
+    background-image: radial-gradient(circle at 20% 50%, hsl(0 0% 10% / 0.5) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, hsl(0 0% 15% / 0.5) 0%, transparent 50%);
     background-attachment: fixed;
   }
 
@@ -103,10 +103,10 @@ All colors MUST be HSL.
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--accent)));
+  background: linear-gradient(180deg, hsl(0 0% 30%), hsl(0 0% 50%));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, hsl(var(--primary-glow)), hsl(var(--primary)));
+  background: linear-gradient(180deg, hsl(0 0% 40%), hsl(0 0% 60%));
 }

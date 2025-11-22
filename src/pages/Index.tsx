@@ -32,12 +32,13 @@ const IndexContent = () => {
       <header className="sticky top-0 z-50 glass border-b border-border/50 backdrop-blur-xl">
         <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
+            <div className="flex-1"></div>
             <img 
               src={logo} 
               alt="MetaMask Logo" 
-              className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain p-2 border-2 border-foreground rounded-xl bg-background"
+              className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
             />
-            <div className="flex-shrink-0">
+            <div className="flex-1 flex justify-end">
               <WalletConnect />
             </div>
           </div>

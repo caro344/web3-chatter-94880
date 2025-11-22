@@ -35,7 +35,7 @@ const IndexContent = () => {
             <img 
               src={logo} 
               alt="MetaMask Logo" 
-              className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+              className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain p-2 border-2 border-foreground rounded-xl bg-background"
             />
             <div className="flex-shrink-0">
               <WalletConnect />

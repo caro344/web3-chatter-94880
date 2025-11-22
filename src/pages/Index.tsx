@@ -5,8 +5,8 @@ import WalletConnect from '@/components/WalletConnect';
 import ChatInterface from '@/components/ChatInterface';
 import UserList from '@/components/UserList';
 import QuickGuide from '@/components/QuickGuide';
-import { Layers } from 'lucide-react';
 import { useMemo, useEffect } from 'react';
+import logo from '@/assets/logo.png';
 
 const queryClient = new QueryClient();
 
@@ -33,9 +33,11 @@ const IndexContent = () => {
         <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary via-accent to-primary-glow flex items-center justify-center neon-glow flex-shrink-0">
-                <Layers className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
-              </div>
+              <img 
+                src={logo} 
+                alt="MetaMask Logo" 
+                className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0 object-contain"
+              />
               <div className="min-w-0">
                 <h1 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold gradient-text truncate">Web3 Support</h1>
                 <p className="hidden sm:block text-xs md:text-sm text-muted-foreground">Real-time decentralized chat</p>

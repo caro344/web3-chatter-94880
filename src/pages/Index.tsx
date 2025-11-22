@@ -32,17 +32,11 @@ const IndexContent = () => {
       <header className="sticky top-0 z-50 glass border-b border-border/50 backdrop-blur-xl">
         <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <img 
-                src={logo} 
-                alt="MetaMask Logo" 
-                className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0 object-contain"
-              />
-              <div className="min-w-0">
-                <h1 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold gradient-text truncate">Web3 Support</h1>
-                <p className="hidden sm:block text-xs md:text-sm text-muted-foreground">Real-time decentralized chat</p>
-              </div>
-            </div>
+            <img 
+              src={logo} 
+              alt="MetaMask Logo" 
+              className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+            />
             <div className="flex-shrink-0">
               <WalletConnect />
             </div>

@@ -4,6 +4,7 @@ import ChatInterface from '@/components/ChatInterface';
 import UserList from '@/components/UserList';
 import { useMemo, useEffect, useState } from 'react';
 import logo from '@/assets/logo.png';
+import foxLogo from '@/assets/fox-logo.png';
 import { ArrowUpRight, Globe, ChevronDown, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -103,7 +104,7 @@ const Index = () => {
                 <img 
                   src={logo} 
                   alt="Logo" 
-                  className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
+                  className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
                 />
               </div>
 
@@ -165,17 +166,17 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Right Content - Logo Display */}
+            {/* Right Content - Spinning Fox Logo */}
             <div className="relative flex items-center justify-center lg:justify-end">
               <div className="relative">
                 {/* Glow Effect */}
-                <div className="absolute inset-0 blur-3xl opacity-20 bg-foreground rounded-full scale-75" />
+                <div className="absolute inset-0 blur-3xl opacity-30 bg-orange-500 rounded-full scale-75" />
                 
-                {/* Main Logo */}
+                {/* Spinning Fox Logo */}
                 <img 
-                  src={logo} 
-                  alt="Web3 Support" 
-                  className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain"
+                  src={foxLogo} 
+                  alt="MetaMask Fox" 
+                  className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 object-contain animate-spin-slow"
                 />
               </div>
 

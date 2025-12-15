@@ -1,11 +1,13 @@
 import { createConfig, http } from 'wagmi';
 import { mainnet, sepolia } from 'wagmi/chains';
-import { injected } from 'wagmi/connectors';
+import { injected, metaMask, coinbaseWallet, walletConnect } from 'wagmi/connectors';
 
 export const config = createConfig({
   chains: [mainnet, sepolia],
   connectors: [
     injected(),
+    metaMask(),
+    coinbaseWallet({ appName: 'Web3 Support' }),
   ],
   transports: {
     [mainnet.id]: http(),

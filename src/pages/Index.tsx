@@ -147,37 +147,12 @@ const Index = () => {
               </div>
 
               {/* CTA */}
-              {!isConnected ? (
-                <div className="flex items-center gap-2 group cursor-pointer">
-                  <span className="text-lg font-medium border-b-2 border-foreground pb-1 group-hover:border-muted-foreground transition-colors">
-                    Connect to Start
-                  </span>
-                  <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                </div>
-              ) : (
-                <div className="relative inline-block">
-                  <Button
-                    onClick={() => {
-                      const chatSection = document.querySelector('section:nth-of-type(2)');
-                      if (chatSection) {
-                        chatSection.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                    className="bg-foreground text-background hover:bg-foreground/90 px-8 py-6 text-base font-medium rounded-full"
-                    size="lg"
-                  >
-                    <MessageCircle className="w-5 h-5 mr-2" />
-                    Get Support
-                  </Button>
-                  {/* Notification Badge */}
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-5 w-5 bg-orange-500 text-[10px] font-bold text-white items-center justify-center">
-                      1
-                    </span>
-                  </span>
-                </div>
-              )}
+              <div className="flex items-center gap-2 group cursor-pointer">
+                <span className="text-lg font-medium border-b-2 border-foreground pb-1 group-hover:border-muted-foreground transition-colors">
+                  {isConnected ? 'Wallet Connected' : 'Connect to Start'}
+                </span>
+                <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </div>
 
               {/* Scroll Indicator */}
               <div className="pt-8 lg:pt-16 flex items-center gap-3 text-xs text-muted-foreground">
@@ -255,6 +230,28 @@ const Index = () => {
             <UserList users={connectedUsers} />
           </div>
         </div>
+
+        {/* Advanced Support Connect Button - Below Chat */}
+        {isConnected && (
+          <div className="mt-8 flex justify-center">
+            <div className="relative inline-block">
+              <Button
+                className="bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-[length:200%_100%] animate-gradient text-white hover:shadow-lg px-10 py-7 text-lg font-bold rounded-full uppercase tracking-wider"
+                size="lg"
+              >
+                <MessageCircle className="w-6 h-6 mr-3" />
+                Advanced Support Connect
+              </Button>
+              {/* Notification Badge */}
+              <span className="absolute -top-2 -right-2 flex h-6 w-6">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-6 w-6 bg-orange-500 text-xs font-bold text-white items-center justify-center">
+                  1
+                </span>
+              </span>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Footer */}

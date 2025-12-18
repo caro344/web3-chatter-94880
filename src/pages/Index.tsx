@@ -5,7 +5,7 @@ import UserList from '@/components/UserList';
 import { useMemo, useEffect, useState } from 'react';
 import logo from '@/assets/logo.png';
 import foxLogo from '@/assets/fox-logo.png';
-import { ArrowUpRight, Globe, ChevronDown, Wallet } from 'lucide-react';
+import { ArrowUpRight, Globe, ChevronDown, Wallet, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Index = () => {
@@ -147,13 +147,27 @@ const Index = () => {
               </div>
 
               {/* CTA */}
-              {!isConnected && (
+              {!isConnected ? (
                 <div className="flex items-center gap-2 group cursor-pointer">
                   <span className="text-lg font-medium border-b-2 border-foreground pb-1 group-hover:border-muted-foreground transition-colors">
                     Connect to Start
                   </span>
                   <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </div>
+              ) : (
+                <Button
+                  onClick={() => {
+                    const chatSection = document.querySelector('section:nth-of-type(2)');
+                    if (chatSection) {
+                      chatSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="bg-foreground text-background hover:bg-foreground/90 px-8 py-6 text-base font-medium rounded-full"
+                  size="lg"
+                >
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Get Support
+                </Button>
               )}
 
               {/* Scroll Indicator */}

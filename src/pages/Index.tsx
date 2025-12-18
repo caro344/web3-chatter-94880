@@ -155,19 +155,28 @@ const Index = () => {
                   <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </div>
               ) : (
-                <Button
-                  onClick={() => {
-                    const chatSection = document.querySelector('section:nth-of-type(2)');
-                    if (chatSection) {
-                      chatSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                  className="bg-foreground text-background hover:bg-foreground/90 px-8 py-6 text-base font-medium rounded-full"
-                  size="lg"
-                >
-                  <MessageCircle className="w-5 h-5 mr-2" />
-                  Get Support
-                </Button>
+                <div className="relative inline-block">
+                  <Button
+                    onClick={() => {
+                      const chatSection = document.querySelector('section:nth-of-type(2)');
+                      if (chatSection) {
+                        chatSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="bg-foreground text-background hover:bg-foreground/90 px-8 py-6 text-base font-medium rounded-full"
+                    size="lg"
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    Get Support
+                  </Button>
+                  {/* Notification Badge */}
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-5 w-5 bg-orange-500 text-[10px] font-bold text-white items-center justify-center">
+                      1
+                    </span>
+                  </span>
+                </div>
               )}
 
               {/* Scroll Indicator */}

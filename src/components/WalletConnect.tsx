@@ -54,11 +54,10 @@ const WalletConnect = () => {
     <Button
       onClick={handleConnect}
       size="sm"
-      className="bg-gradient-to-r from-primary via-accent to-primary-glow bg-[length:200%_100%] animate-gradient text-white font-semibold hover:shadow-neon transition-all duration-300 text-xs sm:text-sm px-2 sm:px-4"
+      className="bg-foreground text-background hover:bg-foreground/90 font-medium transition-all duration-300 text-xs sm:text-sm px-3 sm:px-4"
     >
-      <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-      <span className="hidden xs:inline sm:inline">Connect</span>
-      <span className="hidden sm:inline">&nbsp;Wallet</span>
+      <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+      Connect Wallet
     </Button>
   );
 };

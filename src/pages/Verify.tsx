@@ -31,9 +31,9 @@ const Verify = () => {
     }
   }, [navigate]);
 
-  // Track mouse movements for human verification
+  // Track mouse and touch movements for human verification
   useEffect(() => {
-    const handleMouseMove = () => {
+    const handleMovement = () => {
       setMouseMovements(prev => {
         const newCount = prev + 1;
         if (newCount >= 10 && !challenges.find(c => c.id === 'track')?.completed) {
@@ -45,8 +45,15 @@ const Verify = () => {
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMovement);
+    window.addEventListener('touchmove', handleMovement);
+    window.addEventListener('touchstart', handleMovement);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMovement);
+      window.removeEventListener('touchmove', handleMovement);
+      window.removeEventListener('touchstart', handleMovement);
+    };
   }, [challenges]);
 
   // Hold button logic
@@ -208,7 +215,7 @@ const Verify = () => {
                 <div className="text-center p-4 border border-dashed border-border rounded-xl">
                   <Eye className="w-6 h-6 mx-auto mb-2 text-muted-foreground animate-pulse" />
                   <p className="text-sm text-muted-foreground">
-                    Move your mouse around ({Math.min(mouseMovements, 10)}/10)
+                    Move your mouse or touch the screen ({Math.min(mouseMovements, 10)}/10)
                   </p>
                   <div className="w-full bg-secondary rounded-full h-2 mt-2">
                     <div 

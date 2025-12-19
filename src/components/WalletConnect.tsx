@@ -69,6 +69,8 @@ const WalletConnect = () => {
           (window as any).unisat.requestAccounts().then((accounts: string[]) => {
             if (accounts[0]) {
               setNonEvmAddress(accounts[0]);
+              localStorage.setItem('nonEvmWallet', JSON.stringify({ address: accounts[0], type: 'bitcoin' }));
+              window.dispatchEvent(new Event('storage'));
               toast.success(`Bitcoin wallet connected: ${truncateAddress(accounts[0])}`);
             }
           }).catch(() => {
@@ -84,6 +86,8 @@ const WalletConnect = () => {
           (window as any).solana.connect().then((resp: any) => {
             const pubKey = resp.publicKey.toString();
             setNonEvmAddress(pubKey);
+            localStorage.setItem('nonEvmWallet', JSON.stringify({ address: pubKey, type: 'solana' }));
+            window.dispatchEvent(new Event('storage'));
             toast.success(`Solana wallet connected: ${truncateAddress(pubKey)}`);
           }).catch(() => {
             toast.error('Solana wallet connection failed');
@@ -105,6 +109,8 @@ const WalletConnect = () => {
     disconnect();
     setNonEvmAddress(null);
     setSelectedChain(null);
+    localStorage.removeItem('nonEvmWallet');
+    window.dispatchEvent(new Event('storage'));
     toast.info('Wallet disconnected');
   };
 

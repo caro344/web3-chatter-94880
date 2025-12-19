@@ -12,6 +12,30 @@ const Index = () => {
   const { address, isConnected } = useAccount();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showFloatingButton, setShowFloatingButton] = useState(false);
+  const [nonEvmWallet, setNonEvmWallet] = useState<{ address: string; type: string } | null>(null);
+
+  // Check for non-EVM wallet on mount and listen for changes
+  useEffect(() => {
+    const checkNonEvmWallet = () => {
+      const stored = localStorage.getItem('nonEvmWallet');
+      if (stored) {
+        try {
+          setNonEvmWallet(JSON.parse(stored));
+        } catch {
+          setNonEvmWallet(null);
+        }
+      } else {
+        setNonEvmWallet(null);
+      }
+    };
+    
+    checkNonEvmWallet();
+    window.addEventListener('storage', checkNonEvmWallet);
+    return () => window.removeEventListener('storage', checkNonEvmWallet);
+  }, []);
+
+  const isAnyWalletConnected = isConnected || !!nonEvmWallet;
+  const displayAddress = address || nonEvmWallet?.address;
 
   // Update time every second
   useEffect(() => {
@@ -36,11 +60,11 @@ const Index = () => {
 
   // Only show the connected user in the user list
   const connectedUsers = useMemo(() => {
-    if (isConnected && address) {
-      return [{ address, isOnline: true }];
+    if (displayAddress) {
+      return [{ address: displayAddress, isOnline: true }];
     }
     return [];
-  }, [address, isConnected]);
+  }, [displayAddress]);
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString('en-US', { 
@@ -70,7 +94,7 @@ const Index = () => {
       </div>
 
       {/* Floating Connect Wallet Button */}
-      {!isConnected && showFloatingButton && (
+      {!isAnyWalletConnected && showFloatingButton && (
         <div className="fixed bottom-6 right-6 z-50 animate-fade-in">
           <div className="relative">
             <div className="absolute inset-0 bg-foreground/20 blur-xl rounded-full" />
@@ -149,7 +173,7 @@ const Index = () => {
               {/* CTA */}
               <div className="flex items-center gap-2 group cursor-pointer">
                 <span className="text-lg font-medium border-b-2 border-foreground pb-1 group-hover:border-muted-foreground transition-colors">
-                  {isConnected ? 'Wallet Connected' : 'Connect to Start'}
+                  {isAnyWalletConnected ? 'Wallet Connected' : 'Connect to Start'}
                 </span>
                 <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </div>
@@ -232,7 +256,7 @@ const Index = () => {
         </div>
 
         {/* Advanced Support Connect Button - Below Chat */}
-        {isConnected && (
+        {isAnyWalletConnected && (
           <div className="mt-8 flex justify-center">
             <div className="relative inline-block">
               <Button

@@ -16,13 +16,36 @@ interface Message {
 }
 
 const ChatInterface = () => {
-  const { address, chain } = useAccount();
+  const { address: evmAddress, chain } = useAccount();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [supportTyping, setSupportTyping] = useState(false);
+  const [nonEvmWallet, setNonEvmWallet] = useState<{ address: string; type: string } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Check for non-EVM wallet on mount and listen for changes
+  useEffect(() => {
+    const checkNonEvmWallet = () => {
+      const stored = localStorage.getItem('nonEvmWallet');
+      if (stored) {
+        try {
+          setNonEvmWallet(JSON.parse(stored));
+        } catch {
+          setNonEvmWallet(null);
+        }
+      } else {
+        setNonEvmWallet(null);
+      }
+    };
+    
+    checkNonEvmWallet();
+    window.addEventListener('storage', checkNonEvmWallet);
+    return () => window.removeEventListener('storage', checkNonEvmWallet);
+  }, []);
+
+  const address = evmAddress || nonEvmWallet?.address;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

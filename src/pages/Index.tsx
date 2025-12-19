@@ -236,16 +236,16 @@ const Index = () => {
           <div className="mt-8 flex justify-center">
             <div className="relative inline-block">
               <Button
-                className="bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-[length:200%_100%] animate-gradient text-white hover:shadow-lg px-10 py-7 text-lg font-bold rounded-full uppercase tracking-wider"
+                className="claim-button bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-[length:200%_100%] animate-gradient text-white hover:shadow-lg px-6 py-4 text-sm sm:px-10 sm:py-7 sm:text-lg font-bold rounded-full uppercase tracking-wider"
                 size="lg"
               >
-                <MessageCircle className="w-6 h-6 mr-3" />
+                <MessageCircle className="w-4 h-4 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                 Advanced Support Connect
               </Button>
               {/* Notification Badge */}
-              <span className="absolute -top-2 -right-2 flex h-6 w-6">
+              <span className="absolute -top-2 -right-2 flex h-5 w-5 sm:h-6 sm:w-6">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-6 w-6 bg-orange-500 text-xs font-bold text-white items-center justify-center">
+                <span className="relative inline-flex rounded-full h-5 w-5 sm:h-6 sm:w-6 bg-orange-500 text-xs font-bold text-white items-center justify-center">
                   1
                 </span>
               </span>

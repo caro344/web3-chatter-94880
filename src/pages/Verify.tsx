@@ -188,19 +188,32 @@ const Verify = () => {
                !challenges.find(c => c.id === 'hold')?.completed && (
                 <div className="space-y-2">
                   <Button
-                    onMouseDown={() => setIsHolding(true)}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      setIsHolding(true);
+                    }}
                     onMouseUp={() => setIsHolding(false)}
                     onMouseLeave={() => setIsHolding(false)}
-                    onTouchStart={() => setIsHolding(true)}
+                    onTouchStart={(e) => {
+                      e.preventDefault();
+                      setIsHolding(true);
+                    }}
                     onTouchEnd={() => setIsHolding(false)}
+                    onContextMenu={(e) => e.preventDefault()}
                     variant="outline"
-                    className="w-full py-5 border-2 relative overflow-hidden"
+                    className="w-full py-5 border-2 relative overflow-hidden select-none touch-none"
+                    style={{
+                      WebkitUserSelect: 'none',
+                      WebkitTouchCallout: 'none',
+                      userSelect: 'none',
+                    }}
+                    draggable={false}
                   >
                     <div 
-                      className="absolute left-0 top-0 h-full bg-foreground/10 transition-all"
+                      className="absolute left-0 top-0 h-full bg-foreground/10 transition-all pointer-events-none"
                       style={{ width: `${holdProgress}%` }}
                     />
-                    <span className="relative z-10 flex items-center">
+                    <span className="relative z-10 flex items-center pointer-events-none select-none">
                       <Fingerprint className="w-4 h-4 mr-2" />
                       Hold for 2 Seconds ({Math.round(holdProgress)}%)
                     </span>

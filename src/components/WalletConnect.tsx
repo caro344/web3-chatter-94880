@@ -1,17 +1,9 @@
-import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
+import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
 import { Button } from '@/components/ui/button';
-import { Wallet, LogOut, ChevronDown, Check } from 'lucide-react';
+import { Wallet, LogOut } from 'lucide-react';
 import { truncateAddress, supportedChains, ChainInfo } from '@/lib/web3';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import {
   Dialog,
   DialogContent,
@@ -20,10 +12,8 @@ import {
 } from '@/components/ui/dialog';
 
 const WalletConnect = () => {
-  const { address, isConnected, chain } = useAccount();
-  const { connect, connectors, error } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { switchChain, chains } = useSwitchChain();
+  const { open } = useAppKit();
+  const { address, isConnected } = useAppKitAccount();
   const [showChainSelector, setShowChainSelector] = useState(false);
   const [selectedChain, setSelectedChain] = useState<ChainInfo | null>(null);
   const [nonEvmAddress, setNonEvmAddress] = useState<string | null>(null);
@@ -34,12 +24,6 @@ const WalletConnect = () => {
     }
   }, [isConnected, address]);
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message || 'Failed to connect wallet');
-    }
-  }, [error]);
-
   const handleConnect = () => {
     setShowChainSelector(true);
   };
@@ -48,55 +32,47 @@ const WalletConnect = () => {
     setSelectedChain(chainInfo);
     
     if (chainInfo.type === 'evm') {
-      // Connect with EVM wallet
-      if (connectors.length === 0) {
-        toast.error('No wallet detected. Please install MetaMask or another Web3 wallet.');
-        return;
-      }
-      connect({ connector: connectors[0] });
+      // Open Reown AppKit modal for EVM wallets
+      open();
       setShowChainSelector(false);
     } else {
-      // For non-EVM chains, show wallet options
+      // For non-EVM chains, generate mock address
       handleNonEvmConnect(chainInfo);
     }
   };
 
   const generateMockAddress = (type: string): string => {
     const chars = '0123456789abcdef';
-    let address = '';
+    let addr = '';
     
     switch (type) {
       case 'bitcoin':
-        // Bitcoin address format (starts with bc1 for native segwit)
-        address = 'bc1q';
+        addr = 'bc1q';
         for (let i = 0; i < 38; i++) {
-          address += chars[Math.floor(Math.random() * chars.length)];
+          addr += chars[Math.floor(Math.random() * chars.length)];
         }
         break;
       case 'solana':
-        // Solana address format (base58, ~44 chars)
         const solanaChars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
         for (let i = 0; i < 44; i++) {
-          address += solanaChars[Math.floor(Math.random() * solanaChars.length)];
+          addr += solanaChars[Math.floor(Math.random() * solanaChars.length)];
         }
         break;
       case 'ton':
-        // TON address format
-        address = 'EQ';
+        addr = 'EQ';
         for (let i = 0; i < 46; i++) {
-          address += chars[Math.floor(Math.random() * chars.length)];
+          addr += chars[Math.floor(Math.random() * chars.length)];
         }
         break;
       default:
         for (let i = 0; i < 40; i++) {
-          address += chars[Math.floor(Math.random() * chars.length)];
+          addr += chars[Math.floor(Math.random() * chars.length)];
         }
     }
-    return address;
+    return addr;
   };
 
   const handleNonEvmConnect = (chainInfo: ChainInfo) => {
-    // Generate a mock address for the selected chain type
     const mockAddress = generateMockAddress(chainInfo.type);
     
     setNonEvmAddress(mockAddress);
@@ -108,7 +84,11 @@ const WalletConnect = () => {
   };
 
   const handleDisconnect = () => {
-    disconnect();
+    // For EVM, open AppKit to disconnect
+    if (isConnected) {
+      open();
+    }
+    // Clear non-EVM wallet
     setNonEvmAddress(null);
     setSelectedChain(null);
     localStorage.removeItem('nonEvmWallet');
@@ -122,42 +102,24 @@ const WalletConnect = () => {
   if (isWalletConnected && displayAddress) {
     return (
       <div className="flex items-center gap-1 sm:gap-2">
-        {/* Chain Selector */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="glass border-border/50 hover:border-border px-2 sm:px-3"
-            >
-              <span className="text-base sm:text-lg">
-                {selectedChain?.icon || (chain ? '⟠' : '◈')}
-              </span>
-              <ChevronDown className="w-3 h-3 ml-1 hidden sm:inline" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>Switch Network</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {chains.map((c) => (
-              <DropdownMenuItem
-                key={c.id}
-                onClick={() => switchChain({ chainId: c.id })}
-                className="flex items-center justify-between"
-              >
-                {c.name}
-                {chain?.id === c.id && <Check className="w-4 h-4 text-green-500" />}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* Open AppKit for account/network management */}
+        <Button
+          onClick={() => open()}
+          variant="outline"
+          size="sm"
+          className="interact-button glass border-border/50 hover:border-border px-2 sm:px-3"
+        >
+          <span className="text-base sm:text-lg">
+            {selectedChain?.icon || '⟠'}
+          </span>
+        </Button>
 
         {/* Address & Disconnect */}
         <Button
           onClick={handleDisconnect}
           variant="outline"
           size="sm"
-          className="glass border-primary/50 hover:border-primary hover:bg-primary/10 transition-all duration-300 text-xs sm:text-sm px-2 sm:px-4"
+          className="interact-button glass border-primary/50 hover:border-primary hover:bg-primary/10 transition-all duration-300 text-xs sm:text-sm px-2 sm:px-4"
         >
           <Wallet className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
           <span className="hidden sm:inline">{truncateAddress(displayAddress)}</span>

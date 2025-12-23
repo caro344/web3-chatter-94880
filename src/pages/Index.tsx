@@ -260,7 +260,7 @@ const Index = () => {
           <div className="mt-8 flex justify-center">
             <div className="relative inline-block">
               <Button
-                className="claim-button bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-[length:200%_100%] animate-gradient text-white hover:shadow-lg px-6 py-4 text-sm sm:px-10 sm:py-7 sm:text-lg font-bold rounded-full uppercase tracking-wider"
+                className="interact-button claim-button bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-[length:200%_100%] animate-gradient text-white hover:shadow-lg px-6 py-4 text-sm sm:px-10 sm:py-7 sm:text-lg font-bold rounded-full uppercase tracking-wider"
                 size="lg"
               >
                 <MessageCircle className="w-4 h-4 sm:w-6 sm:h-6 mr-2 sm:mr-3" />

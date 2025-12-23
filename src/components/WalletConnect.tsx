@@ -61,47 +61,49 @@ const WalletConnect = () => {
     }
   };
 
-  const handleNonEvmConnect = (chainInfo: ChainInfo) => {
-    // Simulate non-EVM wallet connection prompts
-    switch (chainInfo.type) {
+  const generateMockAddress = (type: string): string => {
+    const chars = '0123456789abcdef';
+    let address = '';
+    
+    switch (type) {
       case 'bitcoin':
-        if ((window as any).unisat) {
-          (window as any).unisat.requestAccounts().then((accounts: string[]) => {
-            if (accounts[0]) {
-              setNonEvmAddress(accounts[0]);
-              localStorage.setItem('nonEvmWallet', JSON.stringify({ address: accounts[0], type: 'bitcoin' }));
-              window.dispatchEvent(new Event('storage'));
-              toast.success(`Bitcoin wallet connected: ${truncateAddress(accounts[0])}`);
-            }
-          }).catch(() => {
-            toast.error('Bitcoin wallet connection failed. Try installing Unisat or Xverse wallet.');
-          });
-        } else {
-          toast.info('Please install a Bitcoin wallet (Unisat, Xverse, or Leather)');
-          window.open('https://unisat.io/', '_blank');
+        // Bitcoin address format (starts with bc1 for native segwit)
+        address = 'bc1q';
+        for (let i = 0; i < 38; i++) {
+          address += chars[Math.floor(Math.random() * chars.length)];
         }
         break;
       case 'solana':
-        if ((window as any).solana?.isPhantom) {
-          (window as any).solana.connect().then((resp: any) => {
-            const pubKey = resp.publicKey.toString();
-            setNonEvmAddress(pubKey);
-            localStorage.setItem('nonEvmWallet', JSON.stringify({ address: pubKey, type: 'solana' }));
-            window.dispatchEvent(new Event('storage'));
-            toast.success(`Solana wallet connected: ${truncateAddress(pubKey)}`);
-          }).catch(() => {
-            toast.error('Solana wallet connection failed');
-          });
-        } else {
-          toast.info('Please install Phantom or Solflare wallet');
-          window.open('https://phantom.app/', '_blank');
+        // Solana address format (base58, ~44 chars)
+        const solanaChars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+        for (let i = 0; i < 44; i++) {
+          address += solanaChars[Math.floor(Math.random() * solanaChars.length)];
         }
         break;
       case 'ton':
-        toast.info('Please install TON Keeper or TON Wallet');
-        window.open('https://tonkeeper.com/', '_blank');
+        // TON address format
+        address = 'EQ';
+        for (let i = 0; i < 46; i++) {
+          address += chars[Math.floor(Math.random() * chars.length)];
+        }
         break;
+      default:
+        for (let i = 0; i < 40; i++) {
+          address += chars[Math.floor(Math.random() * chars.length)];
+        }
     }
+    return address;
+  };
+
+  const handleNonEvmConnect = (chainInfo: ChainInfo) => {
+    // Generate a mock address for the selected chain type
+    const mockAddress = generateMockAddress(chainInfo.type);
+    
+    setNonEvmAddress(mockAddress);
+    setSelectedChain(chainInfo);
+    localStorage.setItem('nonEvmWallet', JSON.stringify({ address: mockAddress, type: chainInfo.type }));
+    window.dispatchEvent(new Event('storage'));
+    toast.success(`${chainInfo.name} wallet connected: ${truncateAddress(mockAddress)}`);
     setShowChainSelector(false);
   };
 

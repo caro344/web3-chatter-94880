@@ -170,7 +170,7 @@ const WalletConnect = () => {
       <Button
         onClick={handleConnect}
         size="sm"
-        className="bg-foreground text-background hover:bg-foreground/90 font-medium transition-all duration-300 text-xs sm:text-sm px-3 sm:px-4"
+        className="interact-button bg-foreground text-background hover:bg-foreground/90 font-medium transition-all duration-300 text-xs sm:text-sm px-3 sm:px-4"
       >
         <Wallet className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
         Connect Wallet
@@ -193,7 +193,7 @@ const WalletConnect = () => {
                     key={chainInfo.id}
                     variant="outline"
                     onClick={() => handleChainSelect(chainInfo)}
-                    className="h-auto py-3 flex flex-col items-center gap-1 hover:border-foreground/50 transition-all"
+                    className="interact-button h-auto py-3 flex flex-col items-center gap-1 hover:border-foreground/50 transition-all"
                   >
                     <span className="text-2xl" style={{ color: chainInfo.color }}>{chainInfo.icon}</span>
                     <span className="text-xs">{chainInfo.name}</span>
@@ -211,7 +211,7 @@ const WalletConnect = () => {
                     key={chainInfo.id}
                     variant="outline"
                     onClick={() => handleChainSelect(chainInfo)}
-                    className="h-auto py-3 flex flex-col items-center gap-1 hover:border-foreground/50 transition-all"
+                    className="interact-button h-auto py-3 flex flex-col items-center gap-1 hover:border-foreground/50 transition-all"
                   >
                     <span className="text-2xl" style={{ color: chainInfo.color }}>{chainInfo.icon}</span>
                     <span className="text-xs">{chainInfo.name}</span>

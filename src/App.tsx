@@ -4,12 +4,25 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from 'wagmi';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { config } from '@/lib/web3';
+import { createAppKit } from '@reown/appkit/react';
+import { config, wagmiAdapter, projectId, networks, metadata } from '@/lib/web3';
 import Index from "./pages/Index";
 import Verify from "./pages/Verify";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+// Initialize AppKit
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks,
+  projectId,
+  metadata,
+  features: {
+    analytics: true,
+  },
+  themeMode: 'dark',
+});
 
 // Protected route that requires human verification
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {

@@ -1,27 +1,27 @@
-import { createConfig, http } from 'wagmi';
-import { mainnet, sepolia, polygon, arbitrum, optimism, bsc, avalanche, fantom, base } from 'wagmi/chains';
-import { injected, metaMask, coinbaseWallet } from 'wagmi/connectors';
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+import { mainnet, sepolia, polygon, arbitrum, optimism, bsc, avalanche, base, type AppKitNetwork } from '@reown/appkit/networks';
 
-// EVM Chains configuration
-export const config = createConfig({
-  chains: [mainnet, sepolia, polygon, arbitrum, optimism, bsc, avalanche, fantom, base],
-  connectors: [
-    injected(),
-    metaMask(),
-    coinbaseWallet({ appName: 'Web3 Support' }),
-  ],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-    [polygon.id]: http(),
-    [arbitrum.id]: http(),
-    [optimism.id]: http(),
-    [bsc.id]: http(),
-    [avalanche.id]: http(),
-    [fantom.id]: http(),
-    [base.id]: http(),
-  },
+// Your Reown Project ID
+export const projectId = 'b56f71f3d4db5b2d58ca185d28a6fdfd';
+
+// Networks configuration - typed as tuple for AppKit
+export const networks: [AppKitNetwork, ...AppKitNetwork[]] = [mainnet, sepolia, polygon, arbitrum, optimism, bsc, avalanche, base];
+
+// App metadata for Reown
+export const metadata = {
+  name: 'Web3 Support',
+  description: 'Secure Web3 Support Chat',
+  url: typeof window !== 'undefined' ? window.location.origin : 'https://web3support.app',
+  icons: ['/favicon.png'],
+};
+
+// Create Wagmi Adapter for Reown AppKit
+export const wagmiAdapter = new WagmiAdapter({
+  networks,
+  projectId,
 });
+
+export const config = wagmiAdapter.wagmiConfig;
 
 export const truncateAddress = (address: string): string => {
   if (!address) return '';
@@ -48,7 +48,6 @@ export const supportedChains: ChainInfo[] = [
   { id: 'optimism', name: 'Optimism', type: 'evm', icon: '○', color: '#FF0420' },
   { id: 'avalanche', name: 'Avalanche', type: 'evm', icon: '▲', color: '#E84142' },
   { id: 'base', name: 'Base', type: 'evm', icon: '◎', color: '#0052FF' },
-  { id: 'fantom', name: 'Fantom', type: 'evm', icon: '◇', color: '#1969FF' },
   // Non-EVM Chains
   { id: 'bitcoin', name: 'Bitcoin', type: 'bitcoin', icon: '₿', color: '#F7931A' },
   { id: 'solana', name: 'Solana', type: 'solana', icon: '◐', color: '#9945FF' },

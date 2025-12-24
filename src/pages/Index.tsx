@@ -1,4 +1,5 @@
 import { useAccount } from 'wagmi';
+import { useAppKitAccount } from '@reown/appkit/react';
 import WalletConnect from '@/components/WalletConnect';
 import ChatInterface from '@/components/ChatInterface';
 import UserList from '@/components/UserList';
@@ -9,7 +10,8 @@ import { ArrowUpRight, Globe, ChevronDown, Wallet, MessageCircle } from 'lucide-
 import { Button } from '@/components/ui/button';
 
 const Index = () => {
-  const { address, isConnected } = useAccount();
+  const { address: wagmiAddress, isConnected: wagmiConnected } = useAccount();
+  const { address: appKitAddress, isConnected: appKitConnected } = useAppKitAccount();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showFloatingButton, setShowFloatingButton] = useState(false);
   const [nonEvmWallet, setNonEvmWallet] = useState<{ address: string; type: string } | null>(null);
@@ -28,14 +30,14 @@ const Index = () => {
         setNonEvmWallet(null);
       }
     };
-    
+
     checkNonEvmWallet();
     window.addEventListener('storage', checkNonEvmWallet);
     return () => window.removeEventListener('storage', checkNonEvmWallet);
   }, []);
 
-  const isAnyWalletConnected = isConnected || !!nonEvmWallet;
-  const displayAddress = address || nonEvmWallet?.address;
+  const isAnyWalletConnected = wagmiConnected || appKitConnected || !!nonEvmWallet;
+  const displayAddress = appKitAddress || wagmiAddress || nonEvmWallet?.address;
 
   // Update time every second
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAccount } from 'wagmi';
+import { useAppKitAccount } from '@reown/appkit/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Send, MessageSquare } from 'lucide-react';
@@ -17,6 +18,7 @@ interface Message {
 
 const ChatInterface = () => {
   const { address: evmAddress, chain } = useAccount();
+  const { address: appKitAddress } = useAppKitAccount();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -39,13 +41,13 @@ const ChatInterface = () => {
         setNonEvmWallet(null);
       }
     };
-    
+
     checkNonEvmWallet();
     window.addEventListener('storage', checkNonEvmWallet);
     return () => window.removeEventListener('storage', checkNonEvmWallet);
   }, []);
 
-  const address = evmAddress || nonEvmWallet?.address;
+  const address = appKitAddress || evmAddress || nonEvmWallet?.address;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

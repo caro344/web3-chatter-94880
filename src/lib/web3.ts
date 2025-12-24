@@ -1,11 +1,47 @@
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
-import { mainnet, sepolia, polygon, arbitrum, optimism, bsc, avalanche, base, type AppKitNetwork } from '@reown/appkit/networks';
+import { SolanaAdapter } from '@reown/appkit-adapter-solana/react';
+import { BitcoinAdapter } from '@reown/appkit-adapter-bitcoin';
+import { 
+  mainnet, 
+  sepolia, 
+  polygon, 
+  arbitrum, 
+  optimism, 
+  bsc, 
+  avalanche, 
+  base,
+  solana,
+  solanaTestnet,
+  solanaDevnet,
+  bitcoin,
+  bitcoinTestnet,
+  type AppKitNetwork 
+} from '@reown/appkit/networks';
 
 // Your Reown Project ID
 export const projectId = 'b56f71f3d4db5b2d58ca185d28a6fdfd';
 
-// Networks configuration - typed as tuple for AppKit
-export const networks: [AppKitNetwork, ...AppKitNetwork[]] = [mainnet, sepolia, polygon, arbitrum, optimism, bsc, avalanche, base];
+// EVM Networks
+export const evmNetworks: [AppKitNetwork, ...AppKitNetwork[]] = [
+  mainnet, sepolia, polygon, arbitrum, optimism, bsc, avalanche, base
+];
+
+// Solana Networks
+export const solanaNetworks: [AppKitNetwork, ...AppKitNetwork[]] = [
+  solana, solanaTestnet, solanaDevnet
+];
+
+// Bitcoin Networks
+export const bitcoinNetworks: [AppKitNetwork, ...AppKitNetwork[]] = [
+  bitcoin, bitcoinTestnet
+];
+
+// All networks combined
+export const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
+  ...evmNetworks,
+  ...solanaNetworks,
+  ...bitcoinNetworks,
+];
 
 // App metadata for Reown
 export const metadata = {
@@ -15,11 +51,17 @@ export const metadata = {
   icons: ['/favicon.png'],
 };
 
-// Create Wagmi Adapter for Reown AppKit
+// Create Wagmi Adapter for EVM
 export const wagmiAdapter = new WagmiAdapter({
-  networks,
+  networks: evmNetworks,
   projectId,
 });
+
+// Create Solana Adapter
+export const solanaAdapter = new SolanaAdapter();
+
+// Create Bitcoin Adapter
+export const bitcoinAdapter = new BitcoinAdapter();
 
 export const config = wagmiAdapter.wagmiConfig;
 

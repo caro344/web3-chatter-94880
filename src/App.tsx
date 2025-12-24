@@ -5,16 +5,24 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from 'wagmi';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { createAppKit } from '@reown/appkit/react';
-import { config, wagmiAdapter, projectId, networks, metadata } from '@/lib/web3';
+import { 
+  config, 
+  wagmiAdapter, 
+  solanaAdapter,
+  bitcoinAdapter,
+  projectId, 
+  networks, 
+  metadata 
+} from '@/lib/web3';
 import Index from "./pages/Index";
 import Verify from "./pages/Verify";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// Initialize AppKit
+// Initialize AppKit with all adapters (EVM, Solana, Bitcoin)
 createAppKit({
-  adapters: [wagmiAdapter],
+  adapters: [wagmiAdapter, solanaAdapter, bitcoinAdapter],
   networks,
   projectId,
   metadata,

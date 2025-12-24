@@ -24,6 +24,23 @@ const WalletConnect = () => {
     }
   }, [isConnected, address]);
 
+  // Listen for non-EVM wallet from localStorage (for TON which still uses mock)
+  useEffect(() => {
+    const savedWallet = localStorage.getItem('nonEvmWallet');
+    if (savedWallet) {
+      try {
+        const { address: savedAddress, type } = JSON.parse(savedWallet);
+        if (type === 'ton') {
+          setNonEvmAddress(savedAddress);
+          const chainInfo = supportedChains.find(c => c.type === type);
+          if (chainInfo) setSelectedChain(chainInfo);
+        }
+      } catch (e) {
+        console.error('Error parsing saved wallet:', e);
+      }
+    }
+  }, []);
+
   const handleConnect = () => {
     setShowChainSelector(true);
   };
@@ -31,49 +48,27 @@ const WalletConnect = () => {
   const handleChainSelect = (chainInfo: ChainInfo) => {
     setSelectedChain(chainInfo);
     
-    if (chainInfo.type === 'evm') {
-      // Open Reown AppKit modal for EVM wallets
+    if (chainInfo.type === 'evm' || chainInfo.type === 'solana' || chainInfo.type === 'bitcoin') {
+      // Open Reown AppKit modal - supports EVM, Solana, and Bitcoin
       open();
       setShowChainSelector(false);
-    } else {
-      // For non-EVM chains, generate mock address
-      handleNonEvmConnect(chainInfo);
+    } else if (chainInfo.type === 'ton') {
+      // TON still uses mock (Reown doesn't have TON adapter yet in stable)
+      handleTonConnect(chainInfo);
     }
   };
 
-  const generateMockAddress = (type: string): string => {
+  const generateTonAddress = (): string => {
     const chars = '0123456789abcdef';
-    let addr = '';
-    
-    switch (type) {
-      case 'bitcoin':
-        addr = 'bc1q';
-        for (let i = 0; i < 38; i++) {
-          addr += chars[Math.floor(Math.random() * chars.length)];
-        }
-        break;
-      case 'solana':
-        const solanaChars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-        for (let i = 0; i < 44; i++) {
-          addr += solanaChars[Math.floor(Math.random() * solanaChars.length)];
-        }
-        break;
-      case 'ton':
-        addr = 'EQ';
-        for (let i = 0; i < 46; i++) {
-          addr += chars[Math.floor(Math.random() * chars.length)];
-        }
-        break;
-      default:
-        for (let i = 0; i < 40; i++) {
-          addr += chars[Math.floor(Math.random() * chars.length)];
-        }
+    let addr = 'EQ';
+    for (let i = 0; i < 46; i++) {
+      addr += chars[Math.floor(Math.random() * chars.length)];
     }
     return addr;
   };
 
-  const handleNonEvmConnect = (chainInfo: ChainInfo) => {
-    const mockAddress = generateMockAddress(chainInfo.type);
+  const handleTonConnect = (chainInfo: ChainInfo) => {
+    const mockAddress = generateTonAddress();
     
     setNonEvmAddress(mockAddress);
     setSelectedChain(chainInfo);
@@ -84,16 +79,18 @@ const WalletConnect = () => {
   };
 
   const handleDisconnect = () => {
-    // For EVM, open AppKit to disconnect
+    // Open AppKit to disconnect (works for EVM, Solana, Bitcoin)
     if (isConnected) {
       open();
     }
-    // Clear non-EVM wallet
-    setNonEvmAddress(null);
-    setSelectedChain(null);
-    localStorage.removeItem('nonEvmWallet');
-    window.dispatchEvent(new Event('storage'));
-    toast.info('Wallet disconnected');
+    // Clear TON wallet if any
+    if (nonEvmAddress) {
+      setNonEvmAddress(null);
+      setSelectedChain(null);
+      localStorage.removeItem('nonEvmWallet');
+      window.dispatchEvent(new Event('storage'));
+      toast.info('Wallet disconnected');
+    }
   };
 
   const displayAddress = address || nonEvmAddress;
